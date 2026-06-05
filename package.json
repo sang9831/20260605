@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "01": "nodemon 01_review.js",
+    "02": "nodemon 02_langchain.js",
+    "03": "nodemon 03_option.js",
+    "04": "nodemon 04_memory+deploy.js",
+    "start": "node 04_memory+deploy.js"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.1.48",
+    "@langchain/google-genai": "^2.1.31",
+    "@langchain/groq": "^1.2.1",
+    "@langchain/openai": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

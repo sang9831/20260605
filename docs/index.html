@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>세계 최고의 챗봇</title>
+    <style>
+      #chatForm,
+      #chatContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="chatForm">
+      <input name="provider" value="google-genai" />
+      <input name="modelName" value="gemini-3.1-flash-lite" />
+      <textarea name="ask" style="resize: none">
+개발자로 성공하는 법이 뭐죠?</textarea
+      >
+      <button>질문하기</button>
+    </form>
+    <section id="chatContainer"></section>
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- markdown -> html -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+    <!-- 인풋 중에 위험한 tag를 일반적인 텍스트 -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <script>
+      const form = document.querySelector("#chatForm");
+      const container = document.querySelector("#chatContainer");
+      const chatHistory = [];
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const chatHistoryStorage = JSON.parse(
+          localStorage.getItem("chatHistory") || "[]",
+        );
+        chatHistory.push(...chatHistoryStorage);
+        for (const h of chatHistory) {
+          const { type, content } = h;
+          console.log(h);
+          if (type === "ask") {
+            const p = document.createElement("p");
+            p.textContent = content;
+            container.append(p);
+          } else {
+            // type === "answer"
+            const div = document.createElement("div");
+            div.innerHTML = DOMPurify.sanitize(marked.parse(content));
+            container.append(div);
+          }
+        }
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const payload = Object.fromEntries(formData);
+        console.log(payload);
+
+        const { ask } = payload;
+        chatHistory.push({ type: "ask", content: ask });
+        const p = document.createElement("p");
+        p.textContent = ask;
+        container.append(p);
+
+        // 링크는 나중에 수정할 것임
+        const API_URL = "http://localhost:3014/chat";
+        const response = await axios.post(API_URL, payload);
+        console.log(response.data);
+
+        const { answer } = response.data;
+        // const p2 = document.createElement("p");
+        // p2.textContent = answer;
+        // container.append(p2);
+        const div = document.createElement("div");
+        div.innerHTML = DOMPurify.sanitize(marked.parse(answer));
+        container.append(div);
+        chatHistory.push({ type: "answer", content: answer });
+
+        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+      });
+    </script>
+  </body>
+</html>
