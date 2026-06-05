@@ -42,7 +42,7 @@
         chatHistory.push(...chatHistoryStorage);
         for (const h of chatHistory) {
           const { type, content } = h;
-          console.log(h);
+          //   console.log(h);
           if (type === "ask") {
             const p = document.createElement("p");
             p.textContent = content;
@@ -60,6 +60,7 @@
         event.preventDefault();
         const formData = new FormData(event.target);
         const payload = Object.fromEntries(formData);
+        payload["history"] = [...chatHistory]; // 복사해서
         console.log(payload);
 
         const { ask } = payload;
@@ -69,7 +70,7 @@
         container.append(p);
 
         // 링크는 나중에 수정할 것임
-        // const API_URL = "http://localhost:3014/chat";
+        // const API_URL = "http://localhost:3044/chat";
         const API_URL = "https://two0260605.onrender.com/chat";
         const response = await axios.post(API_URL, payload);
         console.log(response.data);
