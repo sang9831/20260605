@@ -69,7 +69,8 @@
         container.append(p);
 
         // 링크는 나중에 수정할 것임
-        const API_URL = "http://localhost:3014/chat";
+        // const API_URL = "http://localhost:3014/chat";
+        const API_URL = "https://two0260605.onrender.com/chat";
         const response = await axios.post(API_URL, payload);
         console.log(response.data);
 
