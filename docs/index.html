@@ -330,17 +330,20 @@
         updateTurnDots();
 
         try {
-          const response = await fetch("http://localhost:3012/analyze", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+          const response = await fetch(
+            "https://two0260605.onrender.com/analyze",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                image: imageBase64,
+                hint: hintText,
+                history: history,
+              }),
             },
-            body: JSON.stringify({
-              image: imageBase64,
-              hint: hintText,
-              history: history,
-            }),
-          });
+          );
 
           const data = await response.json();
           console.log(data);
