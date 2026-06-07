@@ -11,8 +11,7 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-// 3011포트가 server3.js용으로 사용 중이므로 게임 서버는 3012포트를 기본으로 사용합니다.
-const PORT = 3012;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
