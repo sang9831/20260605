@@ -4,7 +4,7 @@
     "02": "nodemon 02_langchain.js",
     "03": "nodemon 03_option.js",
     "04": "nodemon 04_memory+deploy.js",
-    "start": "node 04_memory+deploy.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "@langchain/core": "^1.1.48",
